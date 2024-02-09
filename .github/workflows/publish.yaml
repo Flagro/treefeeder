@@ -39,12 +39,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine
+          pip install setuptools wheel twine toml
+    
+      - name: Update pyproject.toml
+        run: |
+          python -c "\
+          import toml; \
+          pyproject = toml.load('pyproject.toml'); \
+          pyproject['project']['version'] = '${{ steps.latest_tag.outputs.tag }}'; \
+          toml.dump(pyproject, open('pyproject.toml', 'w'))"
 
       - name: Build and publish
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          python setup.py sdist bdist_wheel --version ${{ steps.latest_tag.outputs.tag }}
+          python setup.py sdist bdist_wheel
           twine upload dist/*
