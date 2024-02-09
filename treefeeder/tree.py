@@ -42,7 +42,7 @@ class DirectoryTreeWalker:
                 self.file_count += 1
 
 
-def get_tree(directory, padding, print_files=True, pattern=None, ignore_pattern=None):
+def get_tree(directory, pattern=None, ignore_pattern=None):
     """
     Get the tree representation of the directory.
 
@@ -54,4 +54,5 @@ def get_tree(directory, padding, print_files=True, pattern=None, ignore_pattern=
     """
     walker = DirectoryTreeWalker(directory, pattern, ignore_pattern)
     walker.walk()
-    return walker.output
+    output = f"{walker.output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
+    return output
