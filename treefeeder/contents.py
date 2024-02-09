@@ -17,7 +17,7 @@ class DirectoryContentsWalker:
         entries = sorted(os.listdir(full_path))
 
         for entry in entries:
-            if not self.include_hidden and entry.startswith('.'):
+            if not include_hidden and entry.startswith('.'):
                 continue
             entry_full_path = os.path.join(full_path, entry)
             entry_relative_path = os.path.join(relative_path, entry) if relative_path else entry

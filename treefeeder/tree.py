@@ -20,7 +20,7 @@ class DirectoryTreeWalker:
         count = 0
 
         for entry in entries:
-            if not self.include_hidden and entry.startswith('.'):
+            if not include_hidden and entry.startswith('.'):
                 continue
             count += 1
             path = os.path.join(directory, entry)
