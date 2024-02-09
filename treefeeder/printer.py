@@ -1,5 +1,3 @@
-from .tree import get_tree
-from .contents import get_contents
 import os
 import fnmatch
 
