@@ -6,6 +6,6 @@ def get_output(directory, pattern=None, ignore_pattern=None, include_hidden=Fals
     tree_output = get_tree(directory, pattern, ignore_pattern, include_hidden)
     contents_output = get_contents(directory, pattern, ignore_pattern, include_hidden)
     
-    output = (separator + "\n").join([tree_output] + contents_output + ["User's query:"])
+    output = (separator + "\n").join([tree_output] + contents_output + [""])
     
     return output
