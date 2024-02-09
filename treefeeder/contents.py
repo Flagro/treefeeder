@@ -7,16 +7,18 @@ class DirectoryContentsWalker:
     def __init__(self):
         self.output = []
 
-    def walk(self, directory, pattern=None, ignore_pattern=None):
-        self._walk(directory, '', pattern, ignore_pattern)
+    def walk(self, directory, pattern=None, ignore_pattern=None, include_hidden=False):
+        self._walk(directory, '', pattern, ignore_pattern, include_hidden)
 
-    def _walk(self, full_path, relative_path, pattern=None, ignore_pattern=None):
+    def _walk(self, full_path, relative_path, pattern=None, ignore_pattern=None, include_hidden=False):
         if not os.path.isdir(full_path):
             return
 
         entries = sorted(os.listdir(full_path))
 
         for entry in entries:
+            if not self.include_hidden and entry.startswith('.'):
+                continue
             entry_full_path = os.path.join(full_path, entry)
             entry_relative_path = os.path.join(relative_path, entry) if relative_path else entry
 
@@ -39,7 +41,7 @@ class DirectoryContentsWalker:
             return f'Error reading file: {e}'
 
 
-def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
+def get_contents(directory, pattern=None, ignore_pattern=None, include_hidden=False) -> List[str]:
     """
     Get file contents of a directory as a list.
 
@@ -49,5 +51,5 @@ def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
     :return: The contents of the directory as a list
     """
     walker = DirectoryContentsWalker()
-    walker.walk(directory, pattern, ignore_pattern)
+    walker.walk(directory, pattern, ignore_pattern, include_hidden)
     return walker.output

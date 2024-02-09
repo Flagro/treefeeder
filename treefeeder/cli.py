@@ -6,5 +6,6 @@ def get_args():
     parser.add_argument('directory', nargs='?', default='.', help='Directory to start listing')
     parser.add_argument('-P', '--pattern', action='append', help='List only those files that match the pattern')
     parser.add_argument('-I', '--ignore', action='append', help='Do not list files that match the given pattern')
+    parser.add_argument('-a', '--all', action='store_true', help='Include hidden files and directories')
     parser.add_argument('-S', '--separator', default='[SEP]', help='Separator to use between statements')
     return parser.parse_args()

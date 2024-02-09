@@ -8,10 +8,10 @@ class DirectoryTreeWalker:
         self.dir_count = 0
         self.output = ""
 
-    def walk(self, directory, pattern=None, ignore_pattern=None):
-        self._walk(directory, "", pattern, ignore_pattern)
+    def walk(self, directory, pattern=None, ignore_pattern=None, include_hidden=False):
+        self._walk(directory, "", pattern, ignore_pattern, include_hidden)
 
-    def _walk(self, directory, padding, pattern=None, ignore_pattern=None):
+    def _walk(self, directory, padding, pattern=None, ignore_pattern=None, include_hidden=False):
         if not os.path.isdir(directory):
             return
 
@@ -20,6 +20,8 @@ class DirectoryTreeWalker:
         count = 0
 
         for entry in entries:
+            if not self.include_hidden and entry.startswith('.'):
+                continue
             count += 1
             path = os.path.join(directory, entry)
             if os.path.isdir(path):
@@ -36,7 +38,7 @@ class DirectoryTreeWalker:
                 self.file_count += 1
 
 
-def get_tree(directory, pattern=None, ignore_pattern=None) -> str:
+def get_tree(directory, pattern=None, ignore_pattern=None, include_hidden=False) -> str:
     """
     Get the tree representation of the directory.
 
@@ -46,6 +48,6 @@ def get_tree(directory, pattern=None, ignore_pattern=None) -> str:
     :return: The tree representation of the directory
     """
     walker = DirectoryTreeWalker()
-    walker.walk(directory, pattern, ignore_pattern)
+    walker.walk(directory, pattern, ignore_pattern, include_hidden)
     output = f"{walker.output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
     return output
