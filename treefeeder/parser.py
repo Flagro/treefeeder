@@ -53,7 +53,7 @@ class DirectoryTreeWalker:
 def get_output(directory, pattern=None, ignore_pattern=None, include_hidden=False, separator=None):
     walker = DirectoryTreeWalker(pattern, ignore_pattern, include_hidden)
     walker.walk(directory)
-    tree_output = f"{walker.output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
+    tree_output = f"{walker.tree_output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
     contents_output = walker.file_contents
     
     output = (separator + "\n").join([tree_output] + contents_output + [""])
