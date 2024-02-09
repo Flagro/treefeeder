@@ -11,34 +11,28 @@ class DirectoryTreeWalker:
     def walk(self, directory, pattern=None, ignore_pattern=None):
         self._walk(directory, "", pattern, ignore_pattern)
 
-    def _walk(self, directory, padding, pattern=None, ignore_pattern=None, print_files=True):
+    def _walk(self, directory, padding, pattern=None, ignore_pattern=None):
         if not os.path.isdir(directory):
             return
 
-        files = []
-        if print_files:
-            files = [f for f in sorted(os.listdir(directory)) if os.path.isfile(os.path.join(directory, f))]
-        dirs = [d for d in sorted(os.listdir(directory)) if os.path.isdir(os.path.join(directory, d))]
-
+        entries = sorted(os.listdir(directory))
+        total = len(entries)
         count = 0
-        total = len(dirs) + (len(files) if print_files else 0)
-        for d in dirs:
-            count += 1
-            path = os.path.join(directory, d)
-            if ignore_pattern and any(fnmatch.fnmatch(d, p) for p in ignore_pattern):
-                continue
-            self.output += f'{padding}{"└── " if count == total else "├── "}{d}\n'
-            self.dir_count += 1
-            self._walk(path, padding + ("    " if count == total else "│   "), pattern, ignore_pattern)
 
-        if print_files:
-            for f in files:
-                count += 1
-                if pattern and not any(fnmatch.fnmatch(f, p) for p in pattern):
+        for entry in entries:
+            count += 1
+            path = os.path.join(directory, entry)
+            if os.path.isdir(path):
+                if ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern):
                     continue
-                if ignore_pattern and any(fnmatch.fnmatch(f, p) for p in ignore_pattern):
+                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
+                self.dir_count += 1
+                self._walk(path, padding + ("    " if count == total else "│   "), pattern, ignore_pattern)
+            elif os.path.isfile(path):
+                if (pattern and not any(fnmatch.fnmatch(entry, p) for p in pattern)) or \
+                   (ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern)):
                     continue
-                self.output += f'{padding}{"└── " if count == total else "├── "}{f}\n'
+                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
                 self.file_count += 1
 
 
