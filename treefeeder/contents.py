@@ -8,31 +8,29 @@ class DirectoryContentsWalker:
         self.output = []
 
     def walk(self, directory, pattern=None, ignore_pattern=None):
-        self._walk(directory, pattern, ignore_pattern)
+        self._walk(directory, '', pattern, ignore_pattern)
 
-    def _walk(self, directory, pattern=None, ignore_pattern=None):
-        if not os.path.isdir(directory):
+    def _walk(self, full_path, relative_path, pattern=None, ignore_pattern=None):
+        if not os.path.isdir(full_path):
             return
 
-        entries = sorted(os.listdir(directory))
-        total = len(entries)
-        count = 0
+        entries = sorted(os.listdir(full_path))
 
         for entry in entries:
-            count += 1
-            path = os.path.join(directory, entry)
-            if os.path.isdir(path):
+            entry_full_path = os.path.join(full_path, entry)
+            entry_relative_path = os.path.join(relative_path, entry) if relative_path else entry
+
+            if os.path.isdir(entry_full_path):
                 if ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern):
                     continue
-                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
-                self.dir_count += 1
-                self._walk(path, padding + ("    " if count == total else "│   "), pattern, ignore_pattern)
-            elif os.path.isfile(path):
+                self._walk(entry_full_path, entry_relative_path, pattern, ignore_pattern)
+            elif os.path.isfile(entry_full_path):
                 if (pattern and not any(fnmatch.fnmatch(entry, p) for p in pattern)) or \
                    (ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern)):
                     continue
-                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
-                self.file_count += 1
+                self.output.append(f'File: {entry_relative_path}\n')
+                with open(entry_full_path, 'r', encoding='utf-8') as file:
+                    self.output.append(file.read() + '\n')
 
 
 def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
