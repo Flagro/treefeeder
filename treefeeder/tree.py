@@ -36,7 +36,7 @@ class DirectoryTreeWalker:
                 self.file_count += 1
 
 
-def get_tree(directory, pattern=None, ignore_pattern=None):
+def get_tree(directory, pattern=None, ignore_pattern=None) -> str:
     """
     Get the tree representation of the directory.
 

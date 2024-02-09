@@ -1,10 +1,13 @@
-def get_contents(directory, pattern=None, ignore_pattern=None):
+from typing import List
+
+
+def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
     """
-    Get the contents of the directory.
+    Get file contents of a directory as a list.
 
     :param directory: The directory to list
     :param pattern: List only those files that match the pattern
     :param ignore_pattern: Do not list files that match the given pattern
-    :return: The contents of the directory
+    :return: The contents of the directory as a list
     """
     pass
