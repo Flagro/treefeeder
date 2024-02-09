@@ -1,6 +1,6 @@
 # treefeeder
 
-![treefeeder logo](logo.png)
+![treefeeder logo](https://github.com/Flagro/treefeeder/blob/main/logo.png?raw=true)
 
 ## About
 `treefeeder` is a command-line interface (CLI) tool designed to transform a folder of files, such as code files, into a structured string. This string includes both the folder structure (in a Unix tree structure format) and the contents of the files. It's an ideal tool for feeding data into ChatGPT or other large language model (LLM) AI assistants for fine-tuning or query answering.
