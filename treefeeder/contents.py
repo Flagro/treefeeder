@@ -48,6 +48,6 @@ def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
     :param ignore_pattern: Do not list files that match the given pattern
     :return: The contents of the directory as a list
     """
-    walker = DirectoryContentsWalker(directory, pattern, ignore_pattern)
-    walker.walk()
+    walker = DirectoryContentsWalker()
+    walker.walk(directory, pattern, ignore_pattern)
     return walker.output

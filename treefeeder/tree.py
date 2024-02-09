@@ -45,7 +45,7 @@ def get_tree(directory, pattern=None, ignore_pattern=None) -> str:
     :param ignore_pattern: Do not list files that match the given pattern
     :return: The tree representation of the directory
     """
-    walker = DirectoryTreeWalker(directory, pattern, ignore_pattern)
-    walker.walk()
+    walker = DirectoryTreeWalker()
+    walker.walk(directory, pattern, ignore_pattern)
     output = f"{walker.output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
     return output
