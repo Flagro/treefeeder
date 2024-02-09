@@ -1,6 +1,5 @@
-import os
 import fnmatch
-
+from pathlib import Path
 
 class DirectoryTreeWalker:
     def __init__(self, pattern=None, ignore_pattern=None, include_hidden=False):
@@ -14,43 +13,39 @@ class DirectoryTreeWalker:
         self.include_hidden = include_hidden
 
     def walk(self, directory):
-        self._walk(directory, "", "")
+        self._walk(Path(directory), "")
 
-    def _walk(self, full_path, relative_path, padding):
-        if not os.path.isdir(full_path):
+    def _walk(self, path, padding):
+        if not path.is_dir():
             return
 
-        entries = sorted(os.listdir(full_path))
+        entries = sorted(path.iterdir(), key=lambda x: x.name)
         total = len(entries)
-        count = 0
 
-        for entry in entries:
-            if not self.include_hidden and entry.startswith('.'):
+        for count, entry in enumerate(entries, start=1):
+            if not self.include_hidden and entry.name.startswith('.'):
                 continue
             
-            entry_full_path = os.path.join(full_path, entry)
-            entry_relative_path = os.path.join(relative_path, entry) if relative_path else entry
+            if self.ignore_pattern and any(fnmatch.fnmatch(entry.name, p) for p in self.ignore_pattern):
+                continue
             
-            count += 1
-            if os.path.isdir(entry_full_path):
-                if self.ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in self.ignore_pattern):
-                    continue
-                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
+            if entry.is_file() and self.pattern and not any(fnmatch.fnmatch(entry.name, p) for p in self.pattern):
+                continue
+
+            connector = "└── " if count == total else "├── "
+            self.tree_output += f'{padding}{connector}{entry.name}\n'
+
+            if entry.is_dir():
                 self.dir_count += 1
-                self._walk(entry_full_path, padding + ("    " if count == total else "│   "), self.pattern, self.ignore_pattern)
-            elif os.path.isfile(entry_full_path):
-                if (self.pattern and not any(fnmatch.fnmatch(entry, p) for p in self.pattern)) or \
-                   (self.ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in self.ignore_pattern)):
-                    continue
-                self.output += f'{padding}{"└── " if count == total else "├── "}{entry}\n'
+                self._walk(entry, padding + ("    " if count == total else "│   "))
+            elif entry.is_file():
                 self.file_count += 1
-                file_contents = self._read_file_contents(entry_full_path)
-                self.file_contents.append(f'---\nFilePath: {entry_relative_path}\n---\n{file_contents}\n')
+                file_contents = self._read_file_contents(entry)
+                self.file_contents.append(f'---\nFilePath: {entry.relative_to(path.parent)}\n---\n{file_contents}\n')
                 
     def _read_file_contents(self, file_path):
         try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                return file.read()
+            return file_path.read_text(encoding='utf-8')
         except Exception as e:
             return 'Error reading file: {}'.format(str(e))
 
