@@ -52,7 +52,7 @@ class DirectoryTreeWalker:
             with open(file_path, 'r', encoding='utf-8') as file:
                 return file.read()
         except Exception as e:
-            return f'Error reading file: {e}'
+            return 'Error reading file: {}'.format(str(e))
 
 
 def get_output(directory, pattern=None, ignore_pattern=None, include_hidden=False, separator=None):
