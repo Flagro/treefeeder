@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+# PYTHON_ARGCOMPLETE_OK
+
+import sys
+from treefeeder.cli import get_args
+from treefeeder import get_output
+
+
+def main():
+    args = get_args()
+    try:
+        output = get_output(args.directory, '', pattern=args.pattern, ignore_pattern=args.ignore)
+    except Exception as e:
+        sys.stderr.write(e + '\n')
+        sys.exit(1)
+    else:
+        print(output)
+
+
+main()
