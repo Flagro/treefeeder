@@ -1,1 +1,1 @@
-from .printer import get_output
+from .parser import get_output
