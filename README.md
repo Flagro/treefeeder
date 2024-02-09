@@ -19,10 +19,10 @@ You can use treefeeder from the command line by passing the directory path along
 ```bash
 treefeeder <directory_path> [-I ignore_patterns] [-P match_patterns] [-S separator_token]
 ```
-<directory_path>: The path to the directory you want to process.
--I ignore_patterns: Patterns to ignore files or directories.
--P match_patterns: Patterns to match specific files.
--S separator_token: The separator token used in output (default is [SEP]).
+- <directory_path>: The path to the directory you want to process.
+- -I ignore_patterns: Patterns to ignore files or directories.
+- -P match_patterns: Patterns to match specific files.
+- -S separator_token: The separator token used in output (default is [SEP]).
 
 ### Python API
 treefeeder can also be used within Python. To get a string output of your folder structure and file contents, use:
