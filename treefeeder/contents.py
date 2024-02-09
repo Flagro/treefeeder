@@ -28,9 +28,15 @@ class DirectoryContentsWalker:
                 if (pattern and not any(fnmatch.fnmatch(entry, p) for p in pattern)) or \
                    (ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern)):
                     continue
-                self.output.append(f'File: {entry_relative_path}\n')
-                with open(entry_full_path, 'r', encoding='utf-8') as file:
-                    self.output.append(file.read() + '\n')
+                file_contents = self._read_file_contents(entry_full_path)
+                self.output.append(f'File: {entry_relative_path}\n{file_contents}\n')
+    
+    def _read_file_contents(self, file_path):
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                return file.read()
+        except Exception as e:
+            return f'Error reading file: {e}'
 
 
 def get_contents(directory, pattern=None, ignore_pattern=None) -> List[str]:
