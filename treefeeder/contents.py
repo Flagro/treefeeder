@@ -29,7 +29,7 @@ class DirectoryContentsWalker:
                    (ignore_pattern and any(fnmatch.fnmatch(entry, p) for p in ignore_pattern)):
                     continue
                 file_contents = self._read_file_contents(entry_full_path)
-                self.output.append(f'File: {entry_relative_path}\n{file_contents}\n')
+                self.output.append(f'---\nFilePath: {entry_relative_path}\n---\n{file_contents}\n')
     
     def _read_file_contents(self, file_path):
         try:
