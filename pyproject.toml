@@ -1,0 +1,16 @@
+[build-system]
+requires = [
+    "setuptools>=40.6.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "treefeeder"
+version = "0.1.0"
+description = "Feed the contents of a folder into your ChatGPT/LLM queries faster"
+readme = "README.md"
+authors = [
+    { name="Anton Potapov", email="fgreyeducation@gmail.com" }
+]
+license = { file="LICENSE" }
