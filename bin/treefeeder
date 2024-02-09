@@ -10,7 +10,7 @@ from treefeeder import get_output
 def main():
     args = get_args()
     try:
-        output = get_output(args.directory, '', pattern=args.pattern, ignore_pattern=args.ignore)
+        output = get_output(args.directory, pattern=args.pattern, ignore_pattern=args.ignor, separator=args.separator)
     except Exception as e:
         sys.stderr.write(e + '\n')
         sys.exit(1)
