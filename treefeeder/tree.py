@@ -9,9 +9,6 @@ class DirectoryTreeWalker:
         self.output = ""
 
     def walk(self, directory, pattern=None, ignore_pattern=None):
-        self.file_count = 0
-        self.dir_count = 0
-        self.output = ""
         self._walk(directory, "", pattern, ignore_pattern)
 
     def _walk(self, directory, padding, pattern=None, ignore_pattern=None, print_files=True):
