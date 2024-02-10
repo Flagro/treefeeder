@@ -32,9 +32,20 @@ jobs:
 
       - name: Test treefeeder command
         run: |
-          treefeeder ./treefeder --all
-          treefeeder . -P "*.py"
+          treefeeder .
+
+      - name: Test treefeeder command --all
+        run: |
+          treefeeder ./bin --all
+
+      - name: Test treefeeder command -P
+        run: |
           treefeeder . --pattern "*.md"
-          treefeeder . -I "*.py"
+
+      - name: Test treefeeder command -I
+        run: |
           treefeeder . --ignore "*.md"
-          treefeeder . -S ", "
+
+      - name: Test treefeeder command -S
+        run: |
+          treefeeder . --separator ", "
