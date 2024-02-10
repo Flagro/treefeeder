@@ -24,21 +24,41 @@ def main():
     Returns:
         str: The output of the directory listing in a tree-like format.
     """
-    parser = argparse.ArgumentParser(description='List contents of directories in a tree-like format.')
-    parser.add_argument('directory', nargs='?', default='.', help='Directory to start listing')
-    parser.add_argument('-P', '--pattern', action='append', help='List only those files that match the pattern')
-    parser.add_argument('-I', '--ignore', action='append', help='Do not list files that match the given pattern')
-    parser.add_argument('-a', '--all', action='store_true', help='Include hidden files and directories')
-    parser.add_argument('-S', '--separator', default='[SEP]', help='Separator to use between statements')
+    parser = argparse.ArgumentParser(
+        description="List contents of directories in a tree-like format."
+    )
+    parser.add_argument(
+        "directory", nargs="?", default=".", help="Directory to start listing"
+    )
+    parser.add_argument(
+        "-P",
+        "--pattern",
+        action="append",
+        help="List only those files that match the pattern",
+    )
+    parser.add_argument(
+        "-I",
+        "--ignore",
+        action="append",
+        help="Do not list files that match the given pattern",
+    )
+    parser.add_argument(
+        "-a", "--all", action="store_true", help="Include hidden files and directories"
+    )
+    parser.add_argument(
+        "-S", "--separator", default="[SEP]", help="Separator to use between statements"
+    )
     args = parser.parse_args()
     try:
-        output = get_output(args.directory,
-                            pattern=args.pattern,
-                            ignore_pattern=args.ignore,
-                            include_hidden=args.all,
-                            separator=args.separator)
+        output = get_output(
+            args.directory,
+            pattern=args.pattern,
+            ignore_pattern=args.ignore,
+            include_hidden=args.all,
+            separator=args.separator,
+        )
     except Exception as e:
-        sys.stderr.write(e + '\n')
+        sys.stderr.write(e + "\n")
         sys.exit(1)
     else:
         print(output)

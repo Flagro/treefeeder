@@ -164,7 +164,10 @@ def get_output(
     """
     walker = DirectoryTreeWalker(pattern, ignore_pattern, include_hidden)
     walker.walk(directory)
-    tree_output = f"{walker.tree_output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"
+    tree_output = (
+        f"{walker.tree_output}\n"
+        + f"{walker.dir_count} directories, {walker.file_count} files\n"
+    )
     contents_output = walker.file_contents
     separator = separator if separator else ""
     output = separator.join([tree_output] + contents_output + [""])
