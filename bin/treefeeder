@@ -7,7 +7,7 @@ List contents of directories in a tree-like format.
 
 import sys
 import argparse
-from treefeeder import get_output
+from treefeeder.parser import get_output
 
 
 def main():
