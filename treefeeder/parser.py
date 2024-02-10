@@ -170,5 +170,6 @@ def get_output(
     )
     contents_output = walker.file_contents
     separator = separator if separator else ""
+    separator += "\n"
     output = separator.join([tree_output] + contents_output + [""])
     return output
