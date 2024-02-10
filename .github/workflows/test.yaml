@@ -32,7 +32,7 @@ jobs:
 
       - name: Test treefeeder command
         run: |
-          treefeeder .
+          treefeeder ./treefeeder
 
       - name: Test treefeeder command --all
         run: |
