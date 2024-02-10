@@ -40,12 +40,12 @@ jobs:
 
       - name: Test treefeeder command -P
         run: |
-          treefeeder . --pattern "*.md"
+          treefeeder . --pattern "*.toml"
 
       - name: Test treefeeder command -I
         run: |
-          treefeeder . --ignore "*.md"
+          treefeeder . --ignore "*.py"
 
       - name: Test treefeeder command -S
         run: |
-          treefeeder . --separator ", "
+          treefeeder ./bin --separator ", "
