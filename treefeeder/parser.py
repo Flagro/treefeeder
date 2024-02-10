@@ -1,15 +1,37 @@
+"""
+Parser module to walk through the directory tree and list the contents in a tree-like format.
+"""
+
 import fnmatch
 from pathlib import Path
 from typing import List, Optional
 
 
 class DirectoryTreeWalker:
+    """
+    Walk through the directory tree and list the contents in a tree-like format.
+    """
+
     def __init__(
         self,
         pattern: Optional[List[str]] = None,
         ignore_pattern: Optional[List[str]] = None,
         include_hidden: bool = False,
     ):
+        """
+        Initialize the DirectoryTreeWalker object.
+
+        Args:
+            pattern (Optional[List[str]]): List of file patterns to include.
+            ignore_pattern (Optional[List[str]]): List of file patterns to ignore.
+            include_hidden (bool): Flag to include hidden files/directories.
+
+        Attributes:
+            file_count (int): Number of files encountered during the walk.
+            dir_count (int): Number of directories encountered during the walk.
+            tree_output (str): Output string representing the directory tree.
+            file_contents (List[str]): List of file contents encountered during the walk.
+        """
         self.file_count = 0
         self.dir_count = 0
         self.tree_output = ""
@@ -20,9 +42,22 @@ class DirectoryTreeWalker:
         self.include_hidden = include_hidden
 
     def walk(self, directory: str):
+        """
+        Walk through the directory tree starting from the given directory.
+
+        Args:
+            directory (str): The root directory to start the walk from.
+        """
         self._walk(Path(directory), "")
 
     def _walk(self, path: Path, padding: str):
+        """
+        Recursively walk through the directory tree.
+
+        Args:
+            path (Path): The current path being traversed.
+            padding (str): Padding string for formatting the tree output.
+        """
         if not path.is_dir():
             return
 
@@ -43,9 +78,27 @@ class DirectoryTreeWalker:
                 self._process_file(entry, path)
 
     def _filter_entries(self, entries: List[Path]) -> List[Path]:
+        """
+        Filter the entries based on the include and ignore patterns.
+
+        Args:
+            entries (List[Path]): List of entries to filter.
+
+        Returns:
+            List[Path]: Filtered list of entries.
+        """
         return [entry for entry in entries if self._should_include(entry)]
 
     def _should_include(self, entry: Path) -> bool:
+        """
+        Check if the entry should be included based on the include and ignore patterns.
+
+        Args:
+            entry (Path): The entry to check.
+
+        Returns:
+            bool: True if the entry should be included, False otherwise.
+        """
         if not self.include_hidden and entry.name.startswith("."):
             return False
         if self.ignore_pattern and any(
@@ -61,12 +114,28 @@ class DirectoryTreeWalker:
         return True
 
     def _process_file(self, entry: Path, parent_path: Path):
+        """
+        Process a file entry.
+
+        Args:
+            entry (Path): The file entry to process.
+            parent_path (Path): The parent path of the file entry.
+        """
         file_contents = self._read_file_contents(entry)
         self.file_contents.append(
             f"---\nFilePath: {entry.relative_to(parent_path.parent)}\n---\n{file_contents}\n"
         )
 
     def _read_file_contents(self, file_path: Path) -> str:
+        """
+        Read the contents of a file.
+
+        Args:
+            file_path (Path): The path of the file to read.
+
+        Returns:
+            str: The contents of the file.
+        """
         try:
             return file_path.read_text(encoding="utf-8")
         except Exception as e:
@@ -80,6 +149,19 @@ def get_output(
     include_hidden: bool = False,
     separator: Optional[str] = None,
 ) -> str:
+    """
+    Get the output of the directory tree walk.
+
+    Args:
+        directory (str): The root directory to start the walk from.
+        pattern (Optional[List[str]]): List of file patterns to include.
+        ignore_pattern (Optional[List[str]]): List of file patterns to ignore.
+        include_hidden (bool): Flag to include hidden files/directories.
+        separator (Optional[str]): Separator string to join the output sections.
+
+    Returns:
+        str: The output of the directory tree walk.
+    """
     walker = DirectoryTreeWalker(pattern, ignore_pattern, include_hidden)
     walker.walk(directory)
     tree_output = f"{walker.tree_output}\n\n{walker.dir_count} directories, {walker.file_count} files\n"

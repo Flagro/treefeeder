@@ -1,11 +1,29 @@
 #!/usr/bin/env python
 
+"""
+List contents of directories in a tree-like format.
+"""
+
+
 import sys
 import argparse
 from treefeeder import get_output
 
 
 def main():
+    """
+    List contents of directories in a tree-like format.
+
+    Args:
+        directory (str): Directory to start listing
+        pattern (list): List only those files that match the pattern
+        ignore (list): Do not list files that match the given pattern
+        all (bool): Include hidden files and directories
+        separator (str): Separator to use between statements
+
+    Returns:
+        str: The output of the directory listing in a tree-like format.
+    """
     parser = argparse.ArgumentParser(description='List contents of directories in a tree-like format.')
     parser.add_argument('directory', nargs='?', default='.', help='Directory to start listing')
     parser.add_argument('-P', '--pattern', action='append', help='List only those files that match the pattern')
