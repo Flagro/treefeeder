@@ -32,7 +32,7 @@ jobs:
 
       - name: Test treefeeder command
         run: |
-          treefeeder . --all
+          treefeeder ./treefeder --all
           treefeeder . -P "*.py"
           treefeeder . --pattern "*.md"
           treefeeder . -I "*.py"
