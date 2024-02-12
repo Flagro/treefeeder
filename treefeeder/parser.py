@@ -113,9 +113,8 @@ class DirectoryTreeWalker:
             parent_path (Path): The parent path of the file entry.
         """
         file_contents = self._read_file_contents(entry)
-        self.file_contents.append(
-            f"---\nFilePath: {entry.relative_to(parent_path.parent)}\n---\n{file_contents}\n"
-        )
+        file_relative_path = entry.relative_to(parent_path.parent)
+        self.file_contents.append((file_relative_path, file_contents))
 
     def _read_file_contents(self, file_path: Path) -> str:
         """
@@ -159,7 +158,10 @@ def get_output(
         f"{walker.tree_output}\n"
         + f"{walker.dir_count} directories, {walker.file_count} files\n"
     )
-    contents_output = walker.file_contents
+    contents_output = "".join(
+        f"---\nFilePath: {file_content[0]}\n---\n{file_content[1]}\n"
+        for file_content in walker.file_contents
+    )
     separator = separator if separator else ""
     separator += "\n"
     output = separator.join([tree_output] + contents_output + [""])
