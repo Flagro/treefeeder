@@ -53,7 +53,7 @@ class DirectoryTreeWalker:
             return
 
         entries = sorted(path.iterdir(), key=lambda x: x.name)
-        filtered_entries = self._filter_entries(entries)
+        filtered_entries = [entry for entry in entries if self._check_entry(entry)]
         total = len(filtered_entries)
 
         for count, entry in enumerate(filtered_entries, start=1):
@@ -68,19 +68,7 @@ class DirectoryTreeWalker:
                 self.file_count += 1
                 self._process_file(entry, path)
 
-    def _filter_entries(self, entries: List[Path]) -> List[Path]:
-        """
-        Filter the entries based on the include and ignore patterns.
-
-        Args:
-            entries (List[Path]): List of entries to filter.
-
-        Returns:
-            List[Path]: Filtered list of entries.
-        """
-        return [entry for entry in entries if self._should_include(entry)]
-
-    def _should_include(self, entry: Path) -> bool:
+    def _check_entry(self, entry: Path) -> bool:
         """
         Check if the entry should be included based on the include and ignore patterns.
 
