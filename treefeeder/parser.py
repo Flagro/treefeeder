@@ -146,10 +146,10 @@ def get_output(
         f"{walker.tree_output}\n"
         + f"{walker.dir_count} directories, {walker.file_count} files\n"
     )
-    contents_output = "".join(
+    contents_output = [
         f"---\nFilePath: {file_content[0]}\n---\n{file_content[1]}\n"
         for file_content in walker.file_contents
-    )
+    ]
     separator = separator if separator else ""
     separator += "\n"
     output = separator.join([tree_output] + contents_output + [""])
