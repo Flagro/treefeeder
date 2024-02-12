@@ -41,16 +41,7 @@ class DirectoryTreeWalker:
         self.ignore_pattern = ignore_pattern
         self.include_hidden = include_hidden
 
-    def walk(self, directory: str):
-        """
-        Walk through the directory tree starting from the given directory.
-
-        Args:
-            directory (str): The root directory to start the walk from.
-        """
-        self._walk(Path(directory), "")
-
-    def _walk(self, path: Path, padding: str):
+    def walk(self, path: Path, padding: str):
         """
         Recursively walk through the directory tree.
 
@@ -72,7 +63,7 @@ class DirectoryTreeWalker:
             if entry.is_dir():
                 self.dir_count += 1
                 new_padding = padding + ("    " if count == total else "│   ")
-                self._walk(entry, new_padding)
+                self.walk(entry, new_padding)
             elif entry.is_file():
                 self.file_count += 1
                 self._process_file(entry, path)
@@ -163,7 +154,7 @@ def get_output(
         str: The output of the directory tree walk.
     """
     walker = DirectoryTreeWalker(pattern, ignore_pattern, include_hidden)
-    walker.walk(directory)
+    walker.walk(directory, "")
     tree_output = (
         f"{walker.tree_output}\n"
         + f"{walker.dir_count} directories, {walker.file_count} files\n"
