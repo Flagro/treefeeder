@@ -22,6 +22,11 @@ on:
         required: false
         default: false
         type: boolean
+      releaseMessage:
+        description: 'Release Message'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   release:
@@ -76,5 +81,6 @@ jobs:
         with:
           tag_name: ${{ steps.next_version.outputs.version }}
           release_name: Release v${{ steps.next_version.outputs.version }}
+          body: ${{ github.event.inputs.releaseMessage }}
           draft: ${{ github.event.inputs.draft }}
           prerelease: ${{ github.event.inputs.prerelease }}
