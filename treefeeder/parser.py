@@ -153,7 +153,7 @@ def get_output(
         str: The output of the directory tree walk.
     """
     walker = DirectoryTreeWalker(pattern, ignore_pattern, include_hidden)
-    walker.walk(directory, "")
+    walker.walk(Path(directory), "")
     tree_output = (
         f"{walker.tree_output}\n"
         + f"{walker.dir_count} directories, {walker.file_count} files\n"
